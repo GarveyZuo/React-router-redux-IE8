@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript">
+
+  function set_(array, offset) {
+    if (arguments.length < 2) offset = 0;
+    for (var i = 0, n = array.length; i < n; ++i, ++offset)
+      this[offset] = array[i] & 0xFF;
+  }
+    function subarray(start, end) {
+    return this.slice(start, end);
+  }
+  // we need typed arrays
+  function TypedArray(arg1) {
+    var result;
+    if (typeof arg1 === "number") {
+       result = new Array(arg1);
+       for (var i = 0; i < arg1; ++i)
+         result[i] = 0;
+    } else
+       result = arg1.slice(0);
+    result.subarray = subarray;
+    result.buffer = result;
+    result.byteLength = result.length;
+    result.set = set_;
+    if (typeof arg1 === "object" && arg1.buffer)
+      result.buffer = arg1.buffer;
+
+    return result;
+	}
+  
+
+  window.Uint8Array = TypedArray;
+  
+  
+  if ( !Array.prototype.forEach ) {
+
+  Array.prototype.forEach = function forEach( callback, thisArg ) {
+
+    var T, k;
+
+    if ( this == null ) {
+      throw new TypeError( "this is null or not defined" );
+    }
+    var O = Object(this);
+    var len = O.length >>> 0; 
+    if ( typeof callback !== "function" ) {
+      throw new TypeError( callback + " is not a function" );
+    }
+    if ( arguments.length > 1 ) {
+      T = thisArg;
+    }
+    k = 0;
+
+    while( k < len ) {
+
+      var kValue;
+      if ( k in O ) {
+
+        kValue = O[ k ];
+        callback.call( T, kValue, k, O );
+      }
+      k++;
+    }
+  };
+}
+</script>
+<script type="text/javascript" src="es5-shim.min.js"></script>
+<script type="text/javascript" src="es5-sham.min.js"></script>
+
+</head>
+<body>
+<div id="root"></div>
+<script type="text/javascript" src="app.js"></script>
+</body>
+</html>
