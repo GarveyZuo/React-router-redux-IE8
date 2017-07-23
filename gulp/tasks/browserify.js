@@ -16,7 +16,7 @@ var config       = require('../config').browserify;
 var buffer 		 = require('vinyl-buffer');
 var es3ify = require("gulp-es3ify");
 
-gulp.task('browserify', ['convertJS'], function(callback) {
+gulp.task('browserify', ['bableConvert'], function(callback) {
 
   var bundleQueue = config.bundleConfigs.length;
 
